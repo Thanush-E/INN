@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardian | Child Safety Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+
+<body>
+    <div class="app-layout">
+
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">G</div>
+                <div>
+                    <h2>GUARDIAN</h2>
+                    <p>Child Safety System</p>
+                </div>
+            </div>
+
+            <nav>
+                <a href="#overview" class="nav-link active">Overview</a>
+                <a href="#monitor" class="nav-link">Live Monitor</a>
+                <a href="#analytics" class="nav-link">Analytics</a>
+                <a href="#alerts" class="nav-link">Alert History</a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <span class="online-dot"></span>
+                Hardware Monitoring
+            </div>
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">CHILD SAFETY MONITORING</p>
+                    <h1>Guardian Dashboard</h1>
+                </div>
+
+                <div class="topbar-right">
+                    <span id="modeBadge" class="badge badge-hardware">HARDWARE</span>
+                    <button id="refreshButton" class="primary-button">
+                        Refresh
+                    </button>
+                </div>
+            </header>
+
+            <section id="overview">
+                <div class="section-heading">
+                    <div>
+                        <h2>System Overview</h2>
+                        <p>Live status of the Guardian and Child nodes.</p>
+                    </div>
+                    <span id="lastRefresh">Waiting for update...</span>
+                </div>
+
+                <div class="status-grid">
+                    <article class="status-card">
+                        <p>Guardian Connection</p>
+                        <h3 id="deviceConnectionStatus">DISCONNECTED</h3>
+                        <p id="deviceHealthMessage">Waiting for device...</p>
+                        <small id="deviceLastSeen">Last seen: Never</small>
+                    </article>
+
+                    <article class="status-card">
+                        <p>Child Status</p>
+                        <h3 id="childStatus">SEARCHING</h3>
+                        <p>Current child-node state</p>
+                    </article>
+
+                    <article class="status-card">
+                        <p>Signal Strength</p>
+                        <h3 id="signalStrength">--</h3>
+                        <p>Received Signal Strength Indicator</p>
+                    </article>
+
+                    <article class="status-card">
+                        <p>Pending Alerts</p>
+                        <h3 id="pendingAlerts">0</h3>
+                        <p>Alerts waiting for acknowledgement</p>
+                    </article>
+                </div>
+            </section>
+
+            <section id="monitor">
+                <div class="section-heading">
+                    <div>
+                        <h2>Live Device Monitor</h2>
+                        <p>Current hardware and communication information.</p>
+                    </div>
+                </div>
+
+                <div class="monitor-panel">
+                    <div>
+                        <span class="monitor-label">System Message</span>
+                        <p id="systemMessage">Waiting for Guardian telemetry.</p>
+                    </div>
+                    <div>
+                        <span class="monitor-label">Guardian Buzzer</span>
+                        <p id="buzzerStatus">UNKNOWN</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="analytics">
+                <div class="section-heading">
+                    <div>
+                        <h2>Event Analytics</h2>
+                        <p>Recorded events from the hardware.</p>
+                    </div>
+                </div>
+
+                <div class="analytics-grid">
+                    <article class="analytics-card">
+                        <p>Total Events</p>
+                        <h3 id="totalEvents">0</h3>
+                    </article>
+
+                    <article class="analytics-card">
+                        <p>Fall Events</p>
+                        <h3 id="fallEvents">0</h3>
+                    </article>
+
+                    <article class="analytics-card">
+                        <p>Separation Events</p>
+                        <h3 id="separationEvents">0</h3>
+                    </article>
+
+                    <article class="analytics-card">
+                        <p>Motion Events</p>
+                        <h3 id="motionEvents">0</h3>
+                    </article>
+
+                    <article class="analytics-card">
+                        <p>Acknowledged</p>
+                        <h3 id="acknowledgedEvents">0</h3>
+                    </article>
+
+                    <article class="analytics-card">
+                        <p>Average Response</p>
+                        <h3 id="averageResponse">--</h3>
+                    </article>
+                </div>
+            </section>
+
+            <section id="alerts">
+                <div class="section-heading">
+                    <div>
+                        <h2>Alert History</h2>
+                        <p>Review and acknowledge recorded events.</p>
+                    </div>
+
+                    <select id="eventFilter">
+                        <option value="ALL">All Events</option>
+                        <option value="FALL">Fall</option>
+                        <option value="SEPARATION">Separation</option>
+                        <option value="MOTION">Motion / Tilt</option>
+                    </select>
+                </div>
+
+                <div id="alertsError" class="error-message hidden"></div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Event</th>
+                                <th>State</th>
+                                <th>Source</th>
+                                <th>Time</th>
+                                <th>RSSI</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Action / Response</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="alertsTableBody">
+                            <tr>
+                                <td colspan="9" class="empty-state">
+                                    Waiting for alerts...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <footer>
+                Guardian Child Safety Monitoring System
+                <span id="lastUpdated"></span>
+            </footer>
+
+        </main>
+    </div>
+</body>
+</html>
